@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Common/tileset-prototype.tres" type="TileSet" id=1]
+[ext_resource path="res://RandomWalker.cs" type="Script" id=2]
+
+[node name="RandomWalker" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="Level" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 60, 60 )
+cell_custom_transform = Transform2D( 60, 0, 0, 60, 0, 0 )
+format = 1
