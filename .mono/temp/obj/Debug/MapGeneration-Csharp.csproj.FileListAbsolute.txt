@@ -1,8 +1,0 @@
-/home/ajinkya/PROJECTS/Godot/MapGeneration-Csharp/.mono/temp/bin/Debug/MapGeneration-Csharp.dll
-/home/ajinkya/PROJECTS/Godot/MapGeneration-Csharp/.mono/temp/bin/Debug/MapGeneration-Csharp.pdb
-/home/ajinkya/PROJECTS/Godot/MapGeneration-Csharp/.mono/temp/obj/Debug/MapGeneration-Csharp.csprojAssemblyReference.cache
-/home/ajinkya/PROJECTS/Godot/MapGeneration-Csharp/.mono/temp/obj/Debug/MapGeneration-Csharp.AssemblyInfoInputs.cache
-/home/ajinkya/PROJECTS/Godot/MapGeneration-Csharp/.mono/temp/obj/Debug/MapGeneration-Csharp.AssemblyInfo.cs
-/home/ajinkya/PROJECTS/Godot/MapGeneration-Csharp/.mono/temp/obj/Debug/MapGeneration-Csharp.csproj.CoreCompileInputs.cache
-/home/ajinkya/PROJECTS/Godot/MapGeneration-Csharp/.mono/temp/obj/Debug/MapGeneration-Csharp.dll
-/home/ajinkya/PROJECTS/Godot/MapGeneration-Csharp/.mono/temp/obj/Debug/MapGeneration-Csharp.pdb
