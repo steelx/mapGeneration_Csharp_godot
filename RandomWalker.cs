@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 
 public class RandomWalker : Node2D
@@ -15,7 +16,7 @@ public class RandomWalker : Node2D
     private RandomNumberGenerator _rng = new RandomNumberGenerator();
     private State _state = new State();
     private double _horizontalChance = 0.0;
-    private static readonly Vector2[] step = {
+    private static readonly Vector2[] Step = {
         Vector2.Left, Vector2.Left, Vector2.Right, Vector2.Right, Vector2.Down
     };
 
@@ -26,14 +27,15 @@ public class RandomWalker : Node2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        // Connect(nameof(PathCompleted), this, nameof(_place_side_rooms));
         timer = GetNode<Timer>("Timer");
         camera = GetNode<Camera2D>("Camera2D");
         level = GetNode<TileMap>("Level");
         _rng.Randomize();
         _rooms = (Rooms)Rooms.Instance();
         // find occurrences of Vector2.Down
-        var count = Array.FindAll(step, vector2 => vector2.Equals(Vector2.Down)).Length;
-        _horizontalChance = 1.0 - (double)count / step.Length;
+        var count = Array.FindAll(Step, vector2 => vector2.Equals(Vector2.Down)).Length;
+        _horizontalChance = 1.0 - (double)count / Step.Length;
         _setup_camera();
         _generate_level();
     }
@@ -59,23 +61,19 @@ public class RandomWalker : Node2D
         foreach (var path in _state.Path)
         {
             await ToSignal(timer, "timeout");
-            GD.Print("timeout works");
             _copy_room(path.Offset, (int)path.RoomsType);
         }
         EmitSignal(nameof(PathCompleted));
-        GD.Print("_place_path_rooms END");
     }
 
     private async void _place_side_rooms()
     {
         await ToSignal(this, nameof(PathCompleted));
-        GD.Print("should I stay of should I go ! PathCompleted");
         var typesArr = Enum.GetValues(typeof(RoomsType));
         var roomsMaxIndex = typesArr.Length - 1;
         foreach (var emptyCell in _state.EmptyCells)
         {
             var index = _rng.RandiRange(0, roomsMaxIndex);
-            GD.Print("calling _copy_room");
             _copy_room(emptyCell.Key, index);
         }
     }
@@ -119,8 +117,8 @@ public class RandomWalker : Node2D
 
     private void _update_next_position()
     {
-        _state.RandomIndex = _state.RandomIndex < 0 ? _rng.RandiRange(0, step.Length-1) : _state.RandomIndex;
-        _state.Delta = step[_state.RandomIndex];
+        _state.RandomIndex = _state.RandomIndex < 0 ? _rng.RandiRange(0, Step.Length-1) : _state.RandomIndex;
+        _state.Delta = Step[_state.RandomIndex];
 
         var horizontalChance = _rng.Randf();
         if (_state.Delta.IsEqualApprox(Vector2.Left))
@@ -149,7 +147,7 @@ public class RandomWalker : Node2D
             }
         }
 
-        _state.Delta = step[_state.RandomIndex];
+        _state.Delta = Step[_state.RandomIndex];
         _state.Offset += _state.Delta;
     }
 
@@ -169,13 +167,14 @@ public class RandomWalker : Node2D
                 _state.Path[_state.Path.Count - 1].RoomsType = roomsType;
             }
         }
-        
-        var typesArr = Enum.GetValues(typeof(RoomsType));
-        index = _rng.RandiRange(0, typesArr.Length - 1);
-        roomsType = _state.Delta.Equals(Vector2.Down) ? RoomsType.Lrt : (RoomsType)typesArr.GetValue(index);
-        _state.EmptyCells.Remove(_state.Offset);
-        _state.Path.Add(new PathObj(_state.Offset, roomsType));
-        GD.Print(_state.Path.Count);
+        else
+        {
+            var typesArr = Enum.GetValues(typeof(RoomsType));
+            index = _rng.RandiRange(0, typesArr.Length - 1);
+            roomsType = _state.Delta.Equals(Vector2.Down) ? RoomsType.Lrt : (RoomsType)typesArr.GetValue(index);
+            _state.EmptyCells.Remove(_state.Offset);
+            _state.Path.Add(new PathObj(_state.Offset, roomsType));
+        }
     }
 
     private void _update_start_position()

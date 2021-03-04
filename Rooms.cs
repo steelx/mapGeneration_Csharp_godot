@@ -39,7 +39,6 @@ public class Rooms : Node2D
 
 	public List<RoomData> GetRoomData(int type)
 	{
-		GD.Print("roomsType");
 		var group = GetChild<Node2D>(type);
 		var index = _rng.RandiRange(0, group.GetChildCount() - 1);
 		var room = (TileMap) group.GetChild(index);

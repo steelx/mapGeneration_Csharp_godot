@@ -3,4 +3,10 @@
     <TargetFramework>net472</TargetFramework>
     <RootNamespace>MapGenerationCsharp</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove=".mono\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove=".mono\**" />
+  </ItemGroup>
 </Project>
