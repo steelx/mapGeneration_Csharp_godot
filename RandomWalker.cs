@@ -50,8 +50,8 @@ public class RandomWalker : Node2D
         }
 
         _place_walls();
-        _place_path_rooms();
         _place_side_rooms();
+        _place_path_rooms();
     }
 
     private async void _place_path_rooms()
@@ -69,7 +69,7 @@ public class RandomWalker : Node2D
     private async void _place_side_rooms()
     {
         await ToSignal(this, nameof(PathCompleted));
-        GD.Print("doesnt reach here PathCompleted");
+        GD.Print("should I stay of should I go ! PathCompleted");
         var typesArr = Enum.GetValues(typeof(RoomsType));
         var roomsMaxIndex = typesArr.Length - 1;
         foreach (var emptyCell in _state.EmptyCells)
