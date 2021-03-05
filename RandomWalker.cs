@@ -14,7 +14,7 @@ public class RandomWalker : Node2D
 
     private Rooms _rooms;
     private RandomNumberGenerator _rng = new RandomNumberGenerator();
-    private State _state = new State();
+    private State _state;
     private double _horizontalChance = 0.0;
     private static readonly Vector2[] Step = {
         Vector2.Left, Vector2.Left, Vector2.Right, Vector2.Right, Vector2.Down
@@ -92,7 +92,6 @@ public class RandomWalker : Node2D
     {
         var cellGridSize = _grid_to_map(GridSize);
         
-
         foreach (var x in Enumerable.Range(-1, (int)cellGridSize.x))
         {
             foreach (var y in Enumerable.Range(-1, (int)cellGridSize.y+1))
@@ -156,7 +155,7 @@ public class RandomWalker : Node2D
         int index;
         RoomsType roomsType;
         // is not Empty
-        if (_state.Path.Any())
+        if (_state.Path.Count > 0)
         {
             var last = _state.Path.Last();
             if (_rooms.BottomClosed.Contains(last.RoomsType) && _state.Delta.IsEqualApprox(Vector2.Down))
@@ -171,7 +170,7 @@ public class RandomWalker : Node2D
         {
             var typesArr = Enum.GetValues(typeof(RoomsType));
             index = _rng.RandiRange(0, typesArr.Length - 1);
-            roomsType = _state.Delta.Equals(Vector2.Down) ? RoomsType.Lrt : (RoomsType)typesArr.GetValue(index);
+            roomsType = _state.Delta.IsEqualApprox(Vector2.Down) ? RoomsType.Lrt : (RoomsType)typesArr.GetValue(index);
             _state.EmptyCells.Remove(_state.Offset);
             _state.Path.Add(new PathObj(_state.Offset, roomsType));
         }

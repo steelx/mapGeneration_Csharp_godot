@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,8 +6,8 @@ public enum RoomsType { Side = 0, Lr = 1, Lrb = 2, Lrt = 3, Lrtb = 4 }
 
 public class Rooms : Node2D
 {
-	public RoomsType[] BottomOpened = { RoomsType.Lrb, RoomsType.Lrtb };
-	public RoomsType[] BottomClosed = { RoomsType.Lr, RoomsType.Lrt };
+	public readonly RoomsType[] BottomOpened = { RoomsType.Lrb, RoomsType.Lrtb };
+	public readonly RoomsType[] BottomClosed = { RoomsType.Lr, RoomsType.Lrt };
 	public Vector2 RoomSize = Vector2.Zero;
 	public Vector2 CellSize = Vector2.Zero;
 	private RandomNumberGenerator _rng = new RandomNumberGenerator();
@@ -19,14 +18,18 @@ public class Rooms : Node2D
 		GD.Print("Hello csharp");
 	}
 
+	// _Notification runs when you instance it from code
 	public override void _Notification(int what)
 	{
-		if (what == NotificationInstanced)
+		if (what == Node.NotificationInstanced)
 		{
 			_rng.Randomize();
 			var room = GetNode<Node>("Side").GetChild(0) as TileMap;
-			RoomSize = room.GetUsedRect().Size;
-			CellSize = room.CellSize;
+			if (room != null)
+			{
+				RoomSize = room.GetUsedRect().Size;
+				CellSize = room.CellSize;
+			}
 		}
 		base._Notification(what);
 	}
@@ -45,7 +48,7 @@ public class Rooms : Node2D
 		var data = new List<RoomData>();
 		foreach (Vector2 v in room.GetUsedCells())
 		{
-			data.Append(new RoomData(v, room.GetCellv(v)));
+			data.Add(new RoomData(v, room.GetCellv(v)));
 		}
 
 		return data;
